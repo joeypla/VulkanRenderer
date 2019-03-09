@@ -1,6 +1,7 @@
 #pragma once
 
-class GLFWwindow;
+struct GLFWwindow;
+struct VkInstance_T;
 
 class Engine
 {
@@ -16,4 +17,7 @@ private:
 	void cleanup();
 	
 	GLFWwindow* window;
+
+	void createVulkanInstance();
+	VkInstance_T* vulkanInstance;
 };
