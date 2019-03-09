@@ -59,6 +59,7 @@ void Engine::initVulkan()
 	createVulkanInstance();
 	setupDebugMessenger();
 	pickPhysicalDevice();
+	createLogicalDevice();
 }
 
 void Engine::mainLoop()
@@ -71,6 +72,8 @@ void Engine::mainLoop()
 
 void Engine::cleanup()
 {
+	vkDestroyDevice(logicalDevice, nullptr);
+
 	if (enableValidationLayers)
 	{
 		DestroyDebugUtilsMessengerEXT(vulkanInstance, debugMessenger, nullptr);
@@ -214,7 +217,7 @@ VKAPI_ATTR VkBool32 VKAPI_CALL Engine::debugCallback(
 
 void Engine::pickPhysicalDevice()
 {
-	VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
+	physicalDevice = VK_NULL_HANDLE;
 
 	uint32_t deviceCount = 0;
 	vkEnumeratePhysicalDevices(vulkanInstance, &deviceCount, nullptr);
@@ -275,4 +278,44 @@ QueueFamilyIndices Engine::findQueueFamilies(VkPhysicalDevice device)
 	}
 
 	return indices;
+}
+
+void Engine::createLogicalDevice()
+{
+	QueueFamilyIndices indices = findQueueFamilies(physicalDevice);
+
+	VkDeviceQueueCreateInfo queueCreateInfo = {};
+	queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+	queueCreateInfo.queueFamilyIndex = indices.graphicsFamily.value();
+	queueCreateInfo.queueCount = 1;
+	
+	float queuePriority = 1.0f;
+	queueCreateInfo.pQueuePriorities = &queuePriority;
+
+	VkPhysicalDeviceFeatures deviceFeatures = {};
+	VkDeviceCreateInfo createInfo = {};
+	createInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
+
+	createInfo.pQueueCreateInfos = &queueCreateInfo;
+	createInfo.queueCreateInfoCount = 1;
+	createInfo.pEnabledFeatures = &deviceFeatures;
+
+	createInfo.enabledExtensionCount = 0;
+
+	if (enableValidationLayers)
+	{
+		createInfo.ppEnabledLayerNames = validationLayers.data();
+		createInfo.enabledLayerCount = static_cast<uint32_t>(validationLayers.size());
+	}
+	else
+	{
+		createInfo.enabledLayerCount = 0;
+	}
+
+	if (vkCreateDevice(physicalDevice, &createInfo, nullptr, &logicalDevice) != VK_SUCCESS)
+	{
+		throw std::runtime_error("failed to create logical device");
+	}
+
+	vkGetDeviceQueue(logicalDevice, indices.graphicsFamily.value(), 0, &graphicsQueue);
 }

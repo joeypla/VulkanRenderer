@@ -58,6 +58,12 @@ private:
 
 	void pickPhysicalDevice();
 	bool isDeviceSuitable(VkPhysicalDevice device);
+	VkPhysicalDevice physicalDevice;
 
 	QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
+
+	void createLogicalDevice();
+	VkDevice logicalDevice;
+
+	VkQueue graphicsQueue;
 };
