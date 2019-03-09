@@ -1,11 +1,41 @@
 #include "engine.h"
 
-#define GLFW_INCLUDE_VULKAN // GLFW will automatically include vulkan.h
-#include <GLFW/glfw3.h>
-
 #include <iostream>
 #include <stdexcept>
 #include <string>
+
+// According to https://vulkan-tutorial.com/Drawing_a_triangle/Setup/Validation_layers
+// Since below is an extension function, it is not automatically loaded. We have to
+// do an address lookup ourselves using vkGetInstanceProcAddr... why?
+VkResult CreateDebugUtilsMessengerEXT(
+	VkInstance instance,
+	const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo,
+	const VkAllocationCallbacks* pAllocator,
+	VkDebugUtilsMessengerEXT* pDebugMessenger)
+{
+	auto func = (PFN_vkCreateDebugUtilsMessengerEXT)vkGetInstanceProcAddr(instance, "vkCreateDebugUtilsMessengerEXT");
+
+	if (func != nullptr)
+	{
+		return func(instance, pCreateInfo, pAllocator, pDebugMessenger);
+	}
+	else {
+		return VK_ERROR_EXTENSION_NOT_PRESENT;
+	}
+
+}
+
+// Same above goes for this one. Weird.
+void DestroyDebugUtilsMessengerEXT(
+	VkInstance instance, 
+	VkDebugUtilsMessengerEXT debugMessenger, 
+	const VkAllocationCallbacks* pAllocator)
+{
+	auto func = (PFN_vkDestroyDebugUtilsMessengerEXT)vkGetInstanceProcAddr(instance, "vkDestroyDebugUtilsMessengerEXT");
+	if (func != nullptr) {
+		func(instance, debugMessenger, pAllocator);
+	}
+}
 
 void Engine::run()
 {
@@ -27,6 +57,7 @@ void Engine::initWindow()
 void Engine::initVulkan()
 {
 	createVulkanInstance();
+	setupDebugMessenger();
 }
 
 void Engine::mainLoop()
@@ -39,6 +70,11 @@ void Engine::mainLoop()
 
 void Engine::cleanup()
 {
+	if (enableValidationLayers)
+	{
+		DestroyDebugUtilsMessengerEXT(vulkanInstance, debugMessenger, nullptr);
+	}
+
 	vkDestroyInstance(vulkanInstance, nullptr);
 	glfwDestroyWindow(window);
 	glfwTerminate();
@@ -91,6 +127,32 @@ void Engine::createVulkanInstance()
 	}
 }
 
+void Engine::setupDebugMessenger()
+{
+	if (!enableValidationLayers)
+		return;
+
+	VkDebugUtilsMessengerCreateInfoEXT createInfo = {};
+	createInfo.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
+	createInfo.messageSeverity =
+		VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT |
+		VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT |
+		VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT;
+
+	createInfo.messageType =
+		VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT     |
+		VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT  |
+		VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
+
+	createInfo.pfnUserCallback = debugCallback;
+	createInfo.pUserData = nullptr;
+
+	if (CreateDebugUtilsMessengerEXT(vulkanInstance, &createInfo, nullptr, &debugMessenger))
+	{
+		throw std::runtime_error("failed to set up debug messenger!");
+	}
+}
+
 bool Engine::checkValidationLayerSupport()
 {
 	uint32_t layerCount = 0;
@@ -135,4 +197,16 @@ std::vector<const char*> Engine::getRequiredExtensions()
 	}
 
 	return extensions;
+}
+
+VKAPI_ATTR VkBool32 VKAPI_CALL Engine::debugCallback(
+	VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
+	VkDebugUtilsMessageTypeFlagsEXT messageType,
+	const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
+	void* pUserData
+)
+{
+	std::cerr << "validation layer: " << pCallbackData->pMessage << std::endl;
+
+	return VK_FALSE;
 }

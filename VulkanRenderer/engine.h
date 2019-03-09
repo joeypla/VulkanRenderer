@@ -1,9 +1,9 @@
 #pragma once
 
-#include <vector>
+#define GLFW_INCLUDE_VULKAN // GLFW will automatically include vulkan.h
+#include <GLFW/glfw3.h>
 
-struct GLFWwindow;
-struct VkInstance_T;
+#include <vector>
 
 class Engine
 {
@@ -22,8 +22,9 @@ private:
 
 	void createVulkanInstance();
 	VkInstance_T* vulkanInstance;
-
+	VkDebugUtilsMessengerEXT debugMessenger;
 	
+	void setupDebugMessenger();
 
 	bool checkValidationLayerSupport();
 	const std::vector<const char*> validationLayers = {
@@ -32,6 +33,12 @@ private:
 	
 	std::vector<const char*> getRequiredExtensions();
 
+	static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(
+		VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
+		VkDebugUtilsMessageTypeFlagsEXT messageType,
+		const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
+		void* pUserData
+	);
 #ifdef NDEBUG
 	const bool enableValidationLayers = false;
 #else
