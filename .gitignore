@@ -1,0 +1,7 @@
+*.pdb
+*.dll
+*.obj
+.vs
+*.log
+x64/
+VulkanRenderer/x64/
