@@ -5,7 +5,7 @@
 
 #include <iostream>
 #include <stdexcept>
-#include <vector>
+#include <string>
 
 void Engine::run()
 {
@@ -82,4 +82,51 @@ void Engine::createVulkanInstance()
 	{
 		std::cout << "\t" << extension.extensionName << std::endl;
 	}
+
+	if (enableValidationLayers)
+	{
+		if (!checkValidationLayerSupport())
+		{
+			throw std::runtime_error("validation layers requested, but not available!");
+		}
+		
+		createInfo.enabledLayerCount = static_cast<uint32_t>(validationLayers.size());
+		createInfo.ppEnabledLayerNames = validationLayers.data();
+	}
+	else
+	{
+		createInfo.enabledLayerCount = 0;
+	}
+
+
+}
+
+bool Engine::checkValidationLayerSupport()
+{
+	uint32_t layerCount = 0;
+	vkEnumerateInstanceLayerProperties(&layerCount, nullptr);
+
+	std::vector<VkLayerProperties> availableLayers(layerCount);
+	vkEnumerateInstanceLayerProperties(&layerCount, availableLayers.data());
+
+	
+	for (const char* layerName : validationLayers)
+	{
+		bool layerFound = false;
+		for (auto& layerProperties : availableLayers)
+		{
+			if (strcmp(layerName, layerProperties.layerName) == 0)
+			{
+				layerFound = true;
+				break;
+			}
+		}
+
+		if (!layerFound)
+		{
+			return false;
+		}
+	}
+
+	return true;
 }
