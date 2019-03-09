@@ -4,6 +4,17 @@
 #include <GLFW/glfw3.h>
 
 #include <vector>
+#include <optional>
+
+struct QueueFamilyIndices
+{
+	std::optional<uint32_t> graphicsFamily;
+
+	bool isComplete()
+	{
+		return graphicsFamily.has_value();
+	}
+};
 
 class Engine
 {
@@ -44,4 +55,9 @@ private:
 #else
 	const bool enableValidationLayers = true;
 #endif
+
+	void pickPhysicalDevice();
+	bool isDeviceSuitable(VkPhysicalDevice device);
+
+	QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
 };
