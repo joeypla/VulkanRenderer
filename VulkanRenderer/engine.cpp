@@ -58,30 +58,17 @@ void Engine::createVulkanInstance()
 	createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
 	createInfo.pApplicationInfo = &appInfo;
 
-	uint32_t glfwExtensionCount = 0;
-	const char** glfwExtensions;
-	glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
+	auto extensions = getRequiredExtensions();
+	
+	createInfo.enabledExtensionCount = static_cast<uint32_t>(extensions.size());
+	createInfo.ppEnabledExtensionNames = extensions.data();
 
-	createInfo.enabledExtensionCount = glfwExtensionCount;
-	createInfo.ppEnabledExtensionNames = glfwExtensions;
-	createInfo.enabledLayerCount = 0;
-
-	if (vkCreateInstance(&createInfo, nullptr, &vulkanInstance) != VK_SUCCESS)
+	std::cout << "Required extensions: " << std::endl;
+	for (auto& extension : extensions)
 	{
-		throw std::runtime_error("Failed to create vulkan instance.");
+		std::cout << "\t" << extension << std::endl;
 	}
 
-	uint32_t extensionCount = 0;
-	vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, nullptr);
-	std::vector<VkExtensionProperties> extensions(extensionCount);
-	vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, extensions.data());
-
-	std::cout << "available extensions: " << std::endl;
-
-	for (const auto& extension : extensions)
-	{
-		std::cout << "\t" << extension.extensionName << std::endl;
-	}
 
 	if (enableValidationLayers)
 	{
@@ -98,7 +85,10 @@ void Engine::createVulkanInstance()
 		createInfo.enabledLayerCount = 0;
 	}
 
-
+	if (vkCreateInstance(&createInfo, nullptr, &vulkanInstance) != VK_SUCCESS)
+	{
+		throw std::runtime_error("Failed to create vulkan instance.");
+	}
 }
 
 bool Engine::checkValidationLayerSupport()
@@ -129,4 +119,20 @@ bool Engine::checkValidationLayerSupport()
 	}
 
 	return true;
+}
+
+std::vector<const char*> Engine::getRequiredExtensions()
+{
+	uint32_t glfwExtensionCount = 0;
+	const char ** glfwExtensions;
+	glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
+
+	std::vector<const char*> extensions(glfwExtensions, glfwExtensions + glfwExtensionCount);
+
+	if (enableValidationLayers)
+	{
+		extensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
+	}
+
+	return extensions;
 }
