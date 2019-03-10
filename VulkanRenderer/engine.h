@@ -9,11 +9,19 @@
 struct QueueFamilyIndices
 {
 	std::optional<uint32_t> graphicsFamily;
+	std::optional<uint32_t> presentFamily;
 
 	bool isComplete()
 	{
-		return graphicsFamily.has_value();
+		return graphicsFamily.has_value() && presentFamily.has_value();
 	}
+};
+
+struct SwapChainSupportDetails
+{
+	VkSurfaceCapabilitiesKHR capabilities;
+	std::vector<VkSurfaceFormatKHR> formats;
+	std::vector<VkPresentModeKHR> presentModes;
 };
 
 class Engine
@@ -31,6 +39,9 @@ private:
 	
 	GLFWwindow* window;
 
+	void createSurface();
+	VkSurfaceKHR surface;
+
 	void createVulkanInstance();
 	VkInstance_T* vulkanInstance;
 	VkDebugUtilsMessengerEXT debugMessenger;
@@ -42,6 +53,10 @@ private:
 		"VK_LAYER_LUNARG_standard_validation"
 	};
 	
+	const std::vector<const char*> deviceExtensions = {
+		VK_KHR_SWAPCHAIN_EXTENSION_NAME
+	};
+
 	std::vector<const char*> getRequiredExtensions();
 
 	static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(
@@ -58,6 +73,18 @@ private:
 
 	void pickPhysicalDevice();
 	bool isDeviceSuitable(VkPhysicalDevice device);
+	bool checkDeviceExtensionSupport(VkPhysicalDevice device);
+	SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice device);
+	VkSurfaceFormatKHR chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats);
+	VkPresentModeKHR chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes);
+	VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
+	void createSwapChain();
+
+	VkSwapchainKHR swapChain;
+	std::vector<VkImage> swapChainImages;
+	VkFormat swapChainImageFormat;
+	VkExtent2D swapChainExtent;
+
 	VkPhysicalDevice physicalDevice;
 
 	QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
@@ -66,4 +93,5 @@ private:
 	VkDevice logicalDevice;
 
 	VkQueue graphicsQueue;
+	VkQueue presentQueue;
 };
