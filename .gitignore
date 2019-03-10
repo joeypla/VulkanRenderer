@@ -5,3 +5,4 @@
 *.log
 x64/
 VulkanRenderer/x64/
+*.spv

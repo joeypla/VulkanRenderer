@@ -24,6 +24,17 @@ struct SwapChainSupportDetails
 	std::vector<VkPresentModeKHR> presentModes;
 };
 
+/*
+Logical steps are as follows
+	1 - Create window using glfw (cross-platform)
+	2 - Create Vulkan instance
+	3 - Setup debug messages if we are in debug mode
+	4 - Create vulkan surface
+	5 - Choose a physical device to use
+	6 - Create the logical device (interface to the GPU)
+	7 - Create the swap chain
+	8 - Create the graphics pipeline (shaders and such)
+*/
 class Engine
 {
 public:
@@ -79,11 +90,15 @@ private:
 	VkPresentModeKHR chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes);
 	VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
 	void createSwapChain();
+	void createImageViews();
+	void createGraphicsPipeline();
 
 	VkSwapchainKHR swapChain;
 	std::vector<VkImage> swapChainImages;
+	std::vector<VkImageView> swapChainImageViews;
 	VkFormat swapChainImageFormat;
 	VkExtent2D swapChainExtent;
+	
 
 	VkPhysicalDevice physicalDevice;
 
