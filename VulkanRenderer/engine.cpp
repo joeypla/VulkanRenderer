@@ -6,6 +6,8 @@
 #include <set>
 #include <algorithm>
 
+#include "helpers.h"
+
 // According to https://vulkan-tutorial.com/Drawing_a_triangle/Setup/Validation_layers
 // Since below is an extension function, it is not automatically loaded. We have to
 // do an address lookup ourselves using vkGetInstanceProcAddr... why?
@@ -558,4 +560,48 @@ void Engine::createLogicalDevice()
 
 	vkGetDeviceQueue(logicalDevice, indices.graphicsFamily.value(), 0, &graphicsQueue);
 	vkGetDeviceQueue(logicalDevice, indices.presentFamily.value(), 0, &presentQueue);
+}
+
+void Engine::createGraphicsPipeline()
+{
+	auto vertexShader = Helpers::readFile("shaders/vert.spv");
+	auto fragmentShader = Helpers::readFile("shaders/frag.spv");
+
+	VkShaderModule vertexShaderModule = createShaderModule(vertexShader);
+	VkShaderModule fragmentShaderModule = createShaderModule(fragmentShader);
+
+
+	VkPipelineShaderStageCreateInfo vertexShaderStageInfo = {};
+	vertexShaderStageInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+	vertexShaderStageInfo.stage = VK_SHADER_STAGE_VERTEX_BIT;
+	vertexShaderStageInfo.module = vertexShaderModule;
+	vertexShaderStageInfo.pName = "main";
+
+	VkPipelineShaderStageCreateInfo fragmentShaderStageInfo = {};
+	fragmentShaderStageInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+	fragmentShaderStageInfo.stage = VK_SHADER_STAGE_FRAGMENT_BIT;
+	fragmentShaderStageInfo.module = fragmentShaderModule;
+	fragmentShaderStageInfo.pName = "main";
+
+	VkPipelineShaderStageCreateInfo ShaderStages[] = { vertexShaderStageInfo, fragmentShaderStageInfo };
+
+
+	vkDestroyShaderModule(logicalDevice, vertexShaderModule, nullptr);
+	vkDestroyShaderModule(logicalDevice, fragmentShaderModule, nullptr);
+}
+
+VkShaderModule Engine::createShaderModule(std::vector<char>& code)
+{
+	VkShaderModuleCreateInfo createInfo = {};
+	createInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
+	createInfo.codeSize = code.size();
+	createInfo.pCode = reinterpret_cast<const uint32_t*>(code.data());
+
+	VkShaderModule shaderModule;
+	if (vkCreateShaderModule(logicalDevice, &createInfo, nullptr, &shaderModule) != VK_SUCCESS)
+	{
+		throw std::runtime_error("Failed to create shader module");
+	}
+
+	return shaderModule;
 }
