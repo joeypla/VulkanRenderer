@@ -46,6 +46,7 @@ private:
 	void initWindow();
 	void initVulkan();
 	void mainLoop();
+	void drawFrame();
 	void cleanup();
 	
 	GLFWwindow* window;
@@ -93,18 +94,29 @@ private:
 	void createSwapChain();
 
 	void createImageViews();
+	void createRenderPass();
 	void createGraphicsPipeline();
-	VkShaderModule createShaderModule(std::vector<char>& code);
+	void createFrameBuffers();
+	void createCommandPool();
+	void createCommandBuffers();
+	void createSemaphores();
+
+	VkShaderModule createShaderModule(const std::vector<char>& code);
 
 	VkSwapchainKHR swapChain;
 	std::vector<VkImage> swapChainImages;
 	std::vector<VkImageView> swapChainImageViews;
 	VkFormat swapChainImageFormat;
 	VkExtent2D swapChainExtent;
-	
-
+	VkRenderPass renderPass;
+	VkPipelineLayout pipelineLayout;
+	VkPipeline graphicsPipeline;
 	VkPhysicalDevice physicalDevice;
-
+	std::vector<VkFramebuffer> swapChainFramebuffers;
+	VkCommandPool commandPool;
+	std::vector<VkCommandBuffer> commandBuffers;
+	VkSemaphore imageAvailableSemaphore;
+	VkSemaphore renderFinishedSemaphore;
 	QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
 
 	void createLogicalDevice();
