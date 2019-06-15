@@ -1,4 +1,4 @@
-#include "engine.h"
+#include "Instance.h"
 
 #include <iostream>
 #include <stdexcept>
@@ -43,11 +43,10 @@ struct TimingHelper
 int main()
 {
 
-	Engine engineInstance;
+	Instance* instance = Instance::get();
 
-	
 	try {
-		engineInstance.run();
+		instance->run();
 	}
 	catch (const std::exception& e)
 	{

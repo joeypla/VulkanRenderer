@@ -89,14 +89,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\VulkanSDK\1.1.101.0\Include;D:\PersonalProjects\Libraries\glm-0.9.9.3\glm;D:\PersonalProjects\Libraries\glfw-3.2.1.bin.WIN64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\VulkanSDK\1.1.101.0\Include;D:\PersonalProjects\Libraries\glm-0.9.9.3\glm;D:\PersonalProjects\Libraries\glew-2.1.0\include;D:\PersonalProjects\Libraries\glfw-3.2.1.bin.WIN64\include;D:\PersonalProjects\Libraries\FBXSDK\2019.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
-      <AdditionalLibraryDirectories>D:\PersonalProjects\Libraries\glfw-3.2.1.bin.WIN64\lib-vc2015;D:\VulkanSDK\1.1.101.0\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>vulkan-1.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\PersonalProjects\Libraries\glfw-3.2.1.bin.WIN64\lib-vc2015;D:\PersonalProjects\Libraries\glew-2.1.0\lib\Release\x64;D:\VulkanSDK\1.1.101.0\Lib;D:\PersonalProjects\Libraries\FBXSDK\2019.0\lib\vs2015\x64\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>vulkan-1.lib;glfw3.lib;glew32s.lib;opengl32.lib;libfbxsdk-md.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -106,14 +106,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\VulkanSDK\1.1.101.0\Include;D:\PersonalProjects\Libraries\glm-0.9.9.3\glm;D:\PersonalProjects\Libraries\glfw-3.2.1.bin.WIN64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\VulkanSDK\1.1.101.0\Include;D:\PersonalProjects\Libraries\glm-0.9.9.3\glm;D:\PersonalProjects\Libraries\glew-2.1.0\include;D:\PersonalProjects\Libraries\glfw-3.2.1.bin.WIN64\include;D:\PersonalProjects\Libraries\FBXSDK\2019.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
-      <AdditionalLibraryDirectories>D:\PersonalProjects\Libraries\glfw-3.2.1.bin.WIN64\lib-vc2015;D:\VulkanSDK\1.1.101.0\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>vulkan-1.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\PersonalProjects\Libraries\glfw-3.2.1.bin.WIN64\lib-vc2015;D:\PersonalProjects\Libraries\glew-2.1.0\lib\Release\x64;D:\VulkanSDK\1.1.101.0\Lib;D:\PersonalProjects\Libraries\FBXSDK\2019.0\lib\vs2015\x64\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>vulkan-1.lib;glfw3.lib;glew32s.lib;opengl32.lib;libfbxsdk-md.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -125,7 +125,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\VulkanSDK\1.1.101.0\Include;D:\PersonalProjects\Libraries\glm-0.9.9.3\glm;D:\PersonalProjects\Libraries\glfw-3.2.1.bin.WIN64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\VulkanSDK\1.1.101.0\Include;D:\PersonalProjects\Libraries\glm-0.9.9.3\glm;D:\PersonalProjects\Libraries\glew-2.1.0\include;D:\PersonalProjects\Libraries\glfw-3.2.1.bin.WIN64\include;D:\PersonalProjects\Libraries\FBXSDK\2019.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -133,8 +133,8 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
-      <AdditionalLibraryDirectories>D:\PersonalProjects\Libraries\glfw-3.2.1.bin.WIN64\lib-vc2015;D:\VulkanSDK\1.1.101.0\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>vulkan-1.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\PersonalProjects\Libraries\glfw-3.2.1.bin.WIN64\lib-vc2015;D:\PersonalProjects\Libraries\glew-2.1.0\lib\Release\x64;D:\VulkanSDK\1.1.101.0\Lib;D:\PersonalProjects\Libraries\FBXSDK\2019.0\lib\vs2015\x64\release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>vulkan-1.lib;glfw3.lib;glew32s.lib;opengl32.lib;libfbxsdk-md.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -146,7 +146,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\VulkanSDK\1.1.101.0\Include;D:\PersonalProjects\Libraries\glm-0.9.9.3\glm;D:\PersonalProjects\Libraries\glfw-3.2.1.bin.WIN64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\VulkanSDK\1.1.101.0\Include;D:\PersonalProjects\Libraries\glm-0.9.9.3\glm;D:\PersonalProjects\Libraries\glew-2.1.0\include;D:\PersonalProjects\Libraries\glfw-3.2.1.bin.WIN64\include;D:\PersonalProjects\Libraries\FBXSDK\2019.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -154,18 +154,31 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
-      <AdditionalLibraryDirectories>D:\PersonalProjects\Libraries\glfw-3.2.1.bin.WIN64\lib-vc2015;D:\VulkanSDK\1.1.101.0\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>vulkan-1.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\PersonalProjects\Libraries\glfw-3.2.1.bin.WIN64\lib-vc2015;D:\PersonalProjects\Libraries\glew-2.1.0\lib\Release\x64;D:\VulkanSDK\1.1.101.0\Lib;D:\PersonalProjects\Libraries\FBXSDK\2019.0\lib\vs2015\x64\release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>vulkan-1.lib;glfw3.lib;glew32s.lib;opengl32.lib;libfbxsdk-md.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="engine.cpp" />
+    <ClCompile Include="GraphicsLayer.cpp" />
     <ClCompile Include="helpers.cpp" />
+    <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="Instance.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="SceneObj.cpp" />
+    <ClCompile Include="Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine.h" />
+    <ClInclude Include="Graphics.h" />
+    <ClInclude Include="GraphicsLayer.h" />
     <ClInclude Include="helpers.h" />
+    <ClInclude Include="InputManager.h" />
+    <ClInclude Include="Instance.h" />
+    <ClInclude Include="Mesh.h" />
+    <ClInclude Include="SceneObj.h" />
+    <ClInclude Include="Shader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
